@@ -1,0 +1,102 @@
+#include "stdio.h"
+#include "math.h"
+void main()
+{
+	int i,j;
+	int m,w=0,l=0,sum=0;
+	float GP,min,max;
+	float a[10];
+	char p;
+
+    struct player
+	{
+       char name[20];
+	   int num;
+	   int score;
+	};
+	struct player pla[10];
+
+	printf("                 欢迎参加黄金点游戏            \n");
+	printf("游戏规则：\n至少两人参与，至多十人参与\n每个人输入的数值不能相同\n");
+
+	do
+	{
+		for(i=0;i<10;i++)
+		{
+			pla[i].score=0;
+		}
+		printf("请输入参与游戏的人数\n");
+		scanf("%d",&j);
+
+pd:		if(j<2||j>10)
+		{
+		   printf("输入错误，请重新输入\n");
+		   scanf("%d",&j);
+		   goto pd;
+		}
+
+		for(i=0;i<j;i++)
+		{
+			printf("请输入玩家%d的姓名\n",i+1);
+			scanf("%s",&pla[i].name);
+			printf("请输入玩家%d的数值\n",i+1);
+			scanf("%d",&pla[i].num);
+		}
+			
+		for(m=0;m<j;m++)
+		{
+			sum=sum+pla[m].num;
+		}
+		GP=(sum/j)*0.618;
+			
+		for(m=0;m<j;m++)
+		{
+			a[m]=fabs(pla[m].num-GP);
+		}
+			
+		for(m=0;m<j;m++)
+		{
+			if(m<2)
+			{
+			  if(a[0]>a[1])
+			  {
+				min=a[1];
+				max=a[0];
+			  }
+			  else
+			  {
+			    min=a[1];
+				max=a[0];
+			  }
+			}
+			if(a[m]>max)
+			{
+				max=a[m];
+				l=m;
+			}
+			if(a[m]<min)
+			{
+				min=a[m];
+				w=m;
+			}
+		}
+
+		for(i=0;i<j;i++)
+		{
+			if(i==l)
+				pla[i].score=pla[i].score-1;
+			if(i==w)
+				pla[i].score=pla[i].score+2;
+		}
+		printf("本局游戏的赢家是：%s\n",pla[w].name);
+		printf("本局游戏的输家是：%s\n",pla[l].name);
+		printf("本局游戏结束玩家得分情况为：\n");
+		for(i=0;i<j;i++)
+		{
+			printf("%s   %d\n",pla[i].name,pla[i].score);
+		}
+
+		printf("如果要继续游戏请输入Y，输入任意字符退出\n");
+		scanf("%s",&p);
+	}while(p=='Y');
+}
